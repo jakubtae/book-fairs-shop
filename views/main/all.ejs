@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kiermasz</title>
+  </head>
+  <body>
+    <script>
+            async function lista_klas(){
+              try{
+        var uuid = <%- JSON.stringify(locals.uuid)%> || 1;
+        xj2 = new XMLHttpRequest();
+        xj2.open(`POST`, `http://localhost:3001/${Number(uuid)}/klasy`, true);
+        xj2.setRequestHeader("Content-Type", "application/json");
+        xj2.send();
+        xj2.onreadystatechange = function () {
+          if (xj2.readyState == 4) {
+                    var response1 = JSON.parse(xj2.responseText);
+                    var klasy = document.querySelector(".klasy");
+                    response1.forEach((klasa)=>{
+                      var klasa_element = document.createElement("button")
+                      klasa_element.id = klasa;
+                      klasa_element.addEventListener("click", function(){lista_przedmiotow(klasa)}, "false") ;
+                      klasa_element.innerHTML = klasa
+                      klasy.appendChild(klasa_element)
+                    })
+                  }
+               }
+              }catch(err){
+                console.log(err)
+              }
+
+      }
+
+
+      async function lista_przedmiotow(klasa){
+        var uuid = <%- JSON.stringify(locals.uuid)%> || 1;
+        var numer =  Number(klasa)
+        xj = new XMLHttpRequest();
+        xj.open(`POST`, `http://localhost:3001/${Number(uuid)}/klasy/${numer}`, true);
+        xj.setRequestHeader("Content-Type", "application/json");
+        xj.send();
+        xj.onreadystatechange = function () {
+          if (xj.readyState == 4) {
+                    var response = JSON.parse(xj.responseText);
+                    var przedmioty = document.querySelector(".przedmioty");
+                    przedmioty.innerHTML="";
+                    response.listOfSubjects.forEach((przedmiot, index)=>{
+                      var przedmiot_element = document.createElement("button")
+                      przedmiot_element.id = `${przedmiot}${index}`;
+                      przedmiot_element.addEventListener("click", function(){lista_ksiazek(response.Grade, przedmiot)}, "false") ;
+                      przedmiot_element.innerHTML = przedmiot;
+                      przedmioty.appendChild(przedmiot_element)
+                    })
+                  }
+               }
+      }
+
+      async function lista_ksiazek(klasa, przedmiot){
+        var uuid = <%- JSON.stringify(locals.uuid)%> || 1;
+        xj3 = new XMLHttpRequest();
+        xj3.open(`POST`, `http://localhost:3001/${Number(uuid)}/klasy/${Number(klasa)}/${String(przedmiot)}`, true);
+        xj3.setRequestHeader("Content-Type", "application/json");
+        xj3.send();
+        xj3.onreadystatechange = function () {
+          if (xj3.readyState == 4) {
+                    var response = JSON.parse(xj3.responseText);
+                    var ksiazki = document.querySelector(".ksiazki");
+                    ksiazki.innerHTML="";
+                    if(response.length > 1){
+                      for(var i = 0; i < response.length; i++){
+                        var ksiazka_element = document.createElement("div");
+                        ksiazka_element.innerHTML = `Tytuł : ${response[i].title}, Cena : ${response[i].Price}`;
+                        ksiazki.appendChild(ksiazka_element)
+                      };
+                    }
+                    else{
+                      var ksiazka_element = document.createElement("div");
+                        ksiazka_element.innerHTML = `Tytuł : ${response[0].title}, Cena : ${response[0].Price}`;
+                        ksiazki.appendChild(ksiazka_element)
+                    }
+                  }
+               }
+      }
+      lista_klas();
+      lista_przedmiotow(2);
+      lista_ksiazek(2, "matematyka");
+    </script>
+
+    <main>
+      <nav class="klasy"></nav>
+      <nav class="przedmioty"></nav>
+      <main class="ksiazki"></main>
+    </main>
+  </body>
+</html>

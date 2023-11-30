@@ -1,0 +1,50 @@
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "uname": "jakub",
+    "password": "123"
+}
+###
+
+GET http://localhost:3000/6465fe724b087ad1e5ac61d8
+Content-Type: application/json
+
+{
+    "jwt" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY1ZmU3MjRiMDg3YWQxZTVhYzYxZDgiLCJ1bmFtZSI6Impha3ViIiwicGFzc3dvcmQiOiIkMmEkMTIkbDhSQzkwUnJoU3cyS09QZW9VZ0w4T2NWZG83bmUvN2tpWjFBYkpjaEVPa3ZiZ3JOUlAwUVMiLCJwZXJtcyI6WyJzdG9yeUNoYW5uZWwiXSwiX192IjowLCJpYXQiOjE2ODQ2MTU2NDgsImV4cCI6MTY4NDYxNjU0OH0.78s31zsYY3K95taEV2r3Q7ah0jVTEYqvxMbxw8YudJw"
+}
+
+
+###
+GET http://localhost:3000/6465fe724b087ad1e5ac61d8/storyChannel
+Content-Type: application/json
+
+{
+    "jwt" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY1ZmU3MjRiMDg3YWQxZTVhYzYxZDgiLCJ1bmFtZSI6Impha3ViIiwicGFzc3dvcmQiOiIkMmEkMTIkbDhSQzkwUnJoU3cyS09QZW9VZ0w4T2NWZG83bmUvN2tpWjFBYkpjaEVPa3ZiZ3JOUlAwUVMiLCJwZXJtcyI6WyJzdG9yeUNoYW5uZWwiXSwiX192IjowLCJpYXQiOjE2ODQ2MTgyMTUsImV4cCI6MTY4NDYxOTExNX0.obkO27huGNskmSOHn9VBg2IC5QUPbgL60VNq4WiXcZg"
+}
+
+###
+
+POST http://localhost:3000/6465fe724b087ad1e5ac61d8/storyChannel/new
+Content-Type: application/json
+
+{
+    "jwt" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY1ZmU3MjRiMDg3YWQxZTVhYzYxZDgiLCJ1bmFtZSI6Impha3ViIiwicGFzc3dvcmQiOiIkMmEkMTIkbDhSQzkwUnJoU3cyS09QZW9VZ0w4T2NWZG83bmUvN2tpWjFBYkpjaEVPa3ZiZ3JOUlAwUVMiLCJwZXJtcyI6WyJzdG9yeUNoYW5uZWwiXSwiX192IjowLCJpYXQiOjE2ODQ2MTgyMTUsImV4cCI6MTY4NDYxOTExNX0.obkO27huGNskmSOHn9VBg2IC5QUPbgL60VNq4WiXcZg",
+    "title" : "Worl War 2 Sniper"
+}
+
+###
+GET http://localhost:3000/6465fe724b087ad1e5ac61d8/storyChannel/646608109f4dcf370d4f7c3d
+Content-Type: application/json
+
+{
+    "jwt" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY1ZmU3MjRiMDg3YWQxZTVhYzYxZDgiLCJ1bmFtZSI6Impha3ViIiwicGFzc3dvcmQiOiIkMmEkMTIkbDhSQzkwUnJoU3cyS09QZW9VZ0w4T2NWZG83bmUvN2tpWjFBYkpjaEVPa3ZiZ3JOUlAwUVMiLCJwZXJtcyI6WyJzdG9yeUNoYW5uZWwiXSwiX192IjowLCJpYXQiOjE2ODQ2MTEyNzksImV4cCI6MTY4NDYxMjE3OX0.-wL6rNTFAYirgvhzZWhknp5wPEUlOqH6zYF5AT2YVzo"
+}
+
+###
+POST http://localhost:3000/6465fe724b087ad1e5ac61d8/storyChannel/64693d77891b9d24d003a2a0/gpt
+Content-Type: application/json
+
+{
+    "jwt" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDY1ZmU3MjRiMDg3YWQxZTVhYzYxZDgiLCJ1bmFtZSI6Impha3ViIiwicGFzc3dvcmQiOiIkMmEkMTIkbDhSQzkwUnJoU3cyS09QZW9VZ0w4T2NWZG83bmUvN2tpWjFBYkpjaEVPa3ZiZ3JOUlAwUVMiLCJwZXJtcyI6WyJzdG9yeUNoYW5uZWwiXSwiX192IjowLCJpYXQiOjE2ODQ2MTgyMTUsImV4cCI6MTY4NDYxOTExNX0.obkO27huGNskmSOHn9VBg2IC5QUPbgL60VNq4WiXcZg"
+}

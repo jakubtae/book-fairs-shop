@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/login.css" />
+    <title>Kiermasz ZS2 - Logowanie</title>
+  </head>
+  <body clas="login">
+    <nav>
+      <h1><span class="third-color">KIERMASZ</span> ZS2</h1>
+    </nav>
+    <div class="all">
+      <main>
+        <h2 class="wp">Witaj Ponownie</h2>
+        <form action="/login" method="POST">
+          <div class="input-container">
+            <label for="email" class="email"> Email </label>
+            <input type="text" name="uname" placeholder=" " required />
+          </div>
+          <div class="input-container">
+            <label for="password" class="haslo"> Hasło </label>
+            <input type="password" name="password" placeholder=" " required />
+          </div>
+          <input type="submit" value="Zaloguj się" class="zs" />
+          <div class="konto">Nie masz konta? Idź do wychowawcy.</div>
+        </form>
+      </main>
+      <aside>
+        <img src="/img/logo_tran.png" alt="" />
+      </aside>
+    </div>
+  </body>
+</html>
