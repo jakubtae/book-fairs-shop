@@ -6,6 +6,7 @@ const Books = require("../models/schemas/books.js");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const { default: mongoose } = require("mongoose");
 
 // * MAIN ROUTE FOR EACH CHANNEL THAT RETURNS STORIES
 
@@ -42,7 +43,7 @@ router.post("/:uuid/klasy/:numer/:przedmiot", async (req, res) => {
         Subject: String(req.params.przedmiot),
         sold: false,
       },
-      { title: 1, Price: 1 }
+      { title: 1, Price: 1, _id: 1 }
     );
     res.send(listOfBooks);
   } catch (err) {
@@ -51,8 +52,27 @@ router.post("/:uuid/klasy/:numer/:przedmiot", async (req, res) => {
   }
 });
 
+router.post("/:uuid/klasy/:numer/:przedmiot/:podr", async (req, res) => {
+  try {
+    var id = new mongoose.Types.ObjectId(req.params.podr);
+    const BookInfo = await Books.find({
+      _id: id,
+      Grade: Number(req.params.numer),
+      Subject: String(req.params.przedmiot),
+      sold: false,
+    });
+    res.send(BookInfo);
+  } catch (err) {
+    res.send(err);
+    console.error(err);
+  }
+});
+
 router.get("/:uuid/ksiazki", authenticateToken, async (req, res) => {
-  res.render("main/all.ejs", { uuid: req.params.uuid });
+  res.render("main/all.ejs", {
+    uuid: req.params.uuid,
+    url: req.protocol + "://" + req.get("host"),
+  });
 });
 
 // * STORY IDEA CREATION ROUTE FOR EACH CHANNEL
@@ -66,22 +86,6 @@ router.post("/:uuid/new", authenticateToken, async (req, res) => {
   });
   res.send("story created successfully");
 });
-
-router.get("/:uuid/:storyid", authenticateToken, async (req, res) => {
-  const story = await Stories.findOne({ _id: req.params.storyid });
-  if (story.published === true) return res.send("Story was published");
-  res.send(story);
-});
-
-router.get(
-  "/:uuid/:perm/:storyid/generate",
-  authenticateToken,
-  async (req, res) => {
-    res.render("main/generate.ejs", {
-      url: req.originalUrl.substring(0, req.originalUrl.length - 9),
-    });
-  }
-);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

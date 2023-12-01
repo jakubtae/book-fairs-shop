@@ -7,85 +7,115 @@
   </head>
   <body>
     <script>
-            async function lista_klas(){
-              try{
-        var uuid = <%- JSON.stringify(locals.uuid)%> || 1;
-        xj2 = new XMLHttpRequest();
-        xj2.open(`POST`, `http://localhost:3001/${Number(uuid)}/klasy`, true);
-        xj2.setRequestHeader("Content-Type", "application/json");
-        xj2.send();
-        xj2.onreadystatechange = function () {
-          if (xj2.readyState == 4) {
-                    var response1 = JSON.parse(xj2.responseText);
-                    var klasy = document.querySelector(".klasy");
-                    response1.forEach((klasa)=>{
-                      var klasa_element = document.createElement("button")
-                      klasa_element.id = klasa;
-                      klasa_element.addEventListener("click", function(){lista_przedmiotow(klasa)}, "false") ;
-                      klasa_element.innerHTML = klasa
-                      klasy.appendChild(klasa_element)
-                    })
-                  }
-               }
-              }catch(err){
-                console.log(err)
+      var url = 0 || <%- JSON.stringify(locals.url) %>;
+      async function szczegoly(klasa, przedmiot, ksiazkaid) {
+        try {
+          var uuid = <%- JSON.stringify(locals.uuid) %> || 1;
+          xj2 = new XMLHttpRequest();
+          xj2.open(`POST`, `${url}/${Number(uuid)}/klasy/${Number(klasa)}/${String(przedmiot)}/${String(ksiazkaid)}`, true);
+          xj2.setRequestHeader("Content-Type", "application/json");
+          xj2.send();
+          xj2.onreadystatechange = function () {
+            if (xj2.readyState == 4) {
+              var response1 = JSON.parse(xj2.responseText);
+              var ksiazki = document.querySelector(".ksiazki");
+              ksiazki.innerHTML = "";
+              ksiazki.innerHTML = `${response1[0].Subject}`;
+            }
+          }
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      async function lista_klas() {
+        try {
+          var uuid = <%- JSON.stringify(locals.uuid) %> || 1;
+          xj2 = new XMLHttpRequest();
+          xj2.open(`POST`, `${url}/${Number(uuid)}/klasy`, true);
+          xj2.setRequestHeader("Content-Type", "application/json");
+          xj2.send();
+          xj2.onreadystatechange = function () {
+            if (xj2.readyState == 4) {
+              var response1 = JSON.parse(xj2.responseText);
+              var klasy = document.querySelector(".klasy");
+              response1.forEach((klasa) => {
+                var klasa_element = document.createElement("button")
+                klasa_element.id = klasa;
+                klasa_element.addEventListener("click", function () { lista_przedmiotow(klasa) }, "false");
+                klasa_element.innerHTML = klasa
+                klasy.appendChild(klasa_element)
+              })
+              lista_przedmiotow(response1[0]);
+            }
+          }
+        } catch (err) {
+          console.log(err)
+        }
+
+      }
+
+
+      async function lista_przedmiotow(klasa) {
+        try {
+          var uuid = <%- JSON.stringify(locals.uuid) %> || 1;
+          var numer = Number(klasa)
+          xj = new XMLHttpRequest();
+          xj.open(`POST`, `${url}/${Number(uuid)}/klasy/${numer}`, true);
+          xj.setRequestHeader("Content-Type", "application/json");
+          xj.send();
+          xj.onreadystatechange = function () {
+            if (xj.readyState == 4) {
+              var response = JSON.parse(xj.responseText);
+              var przedmioty = document.querySelector(".przedmioty");
+              przedmioty.innerHTML = "";
+              response.listOfSubjects.forEach((przedmiot, index) => {
+                var przedmiot_element = document.createElement("button")
+                przedmiot_element.id = przedmiot;
+                przedmiot_element.addEventListener("click", function () { lista_ksiazek(response.Grade, przedmiot) }, "false");
+                przedmiot_element.innerHTML = przedmiot;
+                przedmioty.appendChild(przedmiot_element)
+              })
+              lista_ksiazek(response.Grade, response.listOfSubjects[0]);
+            }
+          }
+        } catch (err) {
+          console.log(err)
+        }
+      }
+
+      async function lista_ksiazek(klasa, przedmiot) {
+        try {
+          var uuid = <%- JSON.stringify(locals.uuid) %> || 1;
+          xj3 = new XMLHttpRequest();
+          xj3.open(`POST`, `${url}/${Number(uuid)}/klasy/${Number(klasa)}/${String(przedmiot)}`, true);
+          xj3.setRequestHeader("Content-Type", "application/json");
+          xj3.send();
+          xj3.onreadystatechange = function () {
+            if (xj3.readyState == 4) {
+              var response = JSON.parse(xj3.responseText);
+              var ksiazki = document.querySelector(".ksiazki");
+              ksiazki.innerHTML = "";
+              if (response.length > 1) {
+                for (var i = 0; i < response.length; i++) {
+                  var ksiazka_element = document.createElement("div");
+                  ksiazka_element.class="ksiazka"
+                  ksiazka_element.innerHTML = `<h3>Tytuł : ${response[i].title}</h3>  <h4>${response[i].Price} </h4> <button onclick="szczegoly('${klasa}', '${przedmiot}', '${response[i]._id}')">Zobacz Więcej</button>`;
+                  ksiazki.appendChild(ksiazka_element)
+                };
               }
-
-      }
-
-
-      async function lista_przedmiotow(klasa){
-        var uuid = <%- JSON.stringify(locals.uuid)%> || 1;
-        var numer =  Number(klasa)
-        xj = new XMLHttpRequest();
-        xj.open(`POST`, `http://localhost:3001/${Number(uuid)}/klasy/${numer}`, true);
-        xj.setRequestHeader("Content-Type", "application/json");
-        xj.send();
-        xj.onreadystatechange = function () {
-          if (xj.readyState == 4) {
-                    var response = JSON.parse(xj.responseText);
-                    var przedmioty = document.querySelector(".przedmioty");
-                    przedmioty.innerHTML="";
-                    response.listOfSubjects.forEach((przedmiot, index)=>{
-                      var przedmiot_element = document.createElement("button")
-                      przedmiot_element.id = `${przedmiot}${index}`;
-                      przedmiot_element.addEventListener("click", function(){lista_ksiazek(response.Grade, przedmiot)}, "false") ;
-                      przedmiot_element.innerHTML = przedmiot;
-                      przedmioty.appendChild(przedmiot_element)
-                    })
-                  }
-               }
-      }
-
-      async function lista_ksiazek(klasa, przedmiot){
-        var uuid = <%- JSON.stringify(locals.uuid)%> || 1;
-        xj3 = new XMLHttpRequest();
-        xj3.open(`POST`, `http://localhost:3001/${Number(uuid)}/klasy/${Number(klasa)}/${String(przedmiot)}`, true);
-        xj3.setRequestHeader("Content-Type", "application/json");
-        xj3.send();
-        xj3.onreadystatechange = function () {
-          if (xj3.readyState == 4) {
-                    var response = JSON.parse(xj3.responseText);
-                    var ksiazki = document.querySelector(".ksiazki");
-                    ksiazki.innerHTML="";
-                    if(response.length > 1){
-                      for(var i = 0; i < response.length; i++){
-                        var ksiazka_element = document.createElement("div");
-                        ksiazka_element.innerHTML = `Tytuł : ${response[i].title}, Cena : ${response[i].Price}`;
-                        ksiazki.appendChild(ksiazka_element)
-                      };
-                    }
-                    else{
-                      var ksiazka_element = document.createElement("div");
-                        ksiazka_element.innerHTML = `Tytuł : ${response[0].title}, Cena : ${response[0].Price}`;
-                        ksiazki.appendChild(ksiazka_element)
-                    }
-                  }
-               }
+              else {
+                var ksiazka_element = document.createElement("div");
+                ksiazka_element.class="ksiazka"
+                ksiazka_element.innerHTML = `<h3>Tytuł : ${response[0].title}</h3> <h4>${response[0].Price}</h4> <button onclick="szczegoly('${klasa}', '${przedmiot}', '${response[0]._id}')">Zobacz Więcej</button>`;
+                ksiazki.appendChild(ksiazka_element)
+              }
+            }
+          }
+        } catch (err) {
+          console.log(err)
+        }
       }
       lista_klas();
-      lista_przedmiotow(2);
-      lista_ksiazek(2, "matematyka");
     </script>
 
     <main>
