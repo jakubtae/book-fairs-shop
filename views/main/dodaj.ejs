@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/dodaj.css" />
+    <title>Kiermasz ZS2 - Dodawanie Książki</title>
+  </head>
+  <body clas="login">
+    <nav>
+      <h1><span class="third-color">KIERMASZ</span> ZS2</h1>
+    </nav>
+    <div class="all">
+      <main>
+        <h2 class="wp">Dodaj książkę</h2>
+        <form action="">
+          <label for="title">Nazwa Książki</label>
+          <input type="text" name="title" id="title" />
+          <label for="subject">Przedmiot</label>
+          <select name="przedmiot" id="subject">
+            <%locals.przedmioty.forEach((przedmiot)=>{%>
+            <option value="<%=przedmiot%>"><%=przedmiot%></option>
+            <%})%>
+          </select>
+          <label for="grade">Klasa</label>
+          <select name="klasa" id="grade">
+            <%locals.klasy.forEach((przedmiot)=>{%>
+            <option value="<%=przedmiot%>"><%=przedmiot%></option>
+            <%})%>
+          </select>
+          <label for="price">Cena</label>
+          <input type="number" min="1" step="any" name="cena" id="price" />
+          <label for="cover">Stan Książki</label>
+          <select name="okladka" id="cover">
+            <%locals.jakosc.forEach((przedmiot)=>{%>
+            <option value="<%=przedmiot%>"><%=przedmiot%></option>
+            <%})%>
+          </select>
+        </form>
+      </main>
+    </div>
+  </body>
+</html>

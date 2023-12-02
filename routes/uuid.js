@@ -3,6 +3,9 @@ const router = express.Router();
 const db = require("../models/db.js");
 const jwt = require("jsonwebtoken");
 const Books = require("../models/schemas/books.js");
+const Subjects = require("../models/schemas/subjects.js");
+const Grades = require("../models/schemas/grades.js");
+const Covers = require("../models/schemas/covers.js");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
@@ -14,6 +17,18 @@ router.post("/:uuid/klasy", async (req, res) => {
   try {
     const listOfGrades = await Books.distinct("Grade");
     res.send(listOfGrades);
+  } catch (err) {
+    res.send(err);
+    console.error(err);
+  }
+});
+
+router.get("/:uuid/dodaj", authenticateToken, async (req, res) => {
+  try {
+    const przedmioty = await Subjects.distinct("name");
+    const klasy = await Grades.distinct("name");
+    const jakosc = await Covers.distinct("name");
+    res.render("main/dodaj.ejs", { przedmioty, klasy, jakosc });
   } catch (err) {
     res.send(err);
     console.error(err);
