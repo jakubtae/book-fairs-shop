@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const storySchema = new mongoose.Schema({
   title: { type: String, required: true },
-  grade: { type: Number, required: true },
+  grade: { type: String, required: true },
   subject: { type: String, required: true },
   author_id: { type: Number, required: true },
   price: { type: mongoose.Decimal128, required: true },

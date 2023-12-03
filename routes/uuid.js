@@ -15,7 +15,8 @@ const { default: mongoose } = require("mongoose");
 
 router.post("/:uuid/klasy", async (req, res) => {
   try {
-    const listOfGrades = await Books.distinct("Grade");
+    const listOfGrades = await Books.distinct("grade");
+    // console.log(listOfGrades);
     res.send(listOfGrades);
   } catch (err) {
     res.send(err);
@@ -37,12 +38,13 @@ router.get("/:uuid/dodaj", authenticateToken, async (req, res) => {
 
 router.post("/:uuid/klasy/:numer", async (req, res) => {
   try {
-    const listOfSubjects = await Books.distinct("Subject", {
-      Grade: Number(req.params.numer),
+    const listOfSubjects = await Books.distinct("subject", {
+      grade: `${req.params.numer}`,
     });
+    // console.log(listOfSubjects);
     res.send({
       listOfSubjects: listOfSubjects,
-      Grade: Number(req.params.numer),
+      grade: Number(req.params.numer),
     });
   } catch (err) {
     res.send(err);
@@ -52,14 +54,16 @@ router.post("/:uuid/klasy/:numer", async (req, res) => {
 
 router.post("/:uuid/klasy/:numer/:przedmiot", async (req, res) => {
   try {
+    console.log(req.params.numer, req.params.przedmiot);
     const listOfBooks = await Books.find(
       {
-        Grade: Number(req.params.numer),
-        Subject: String(req.params.przedmiot),
+        grade: `${req.params.numer}`,
+        subject: String(req.params.przedmiot),
         sold: false,
       },
-      { title: 1, Price: 1, _id: 1 }
+      { title: 1, price: 1, _id: 1, sold: 1 }
     );
+    console.log(listOfBooks);
     res.send(listOfBooks);
   } catch (err) {
     res.send(err);
@@ -72,8 +76,8 @@ router.post("/:uuid/klasy/:numer/:przedmiot/:podr", async (req, res) => {
     var id = new mongoose.Types.ObjectId(req.params.podr);
     const BookInfo = await Books.find({
       _id: id,
-      Grade: Number(req.params.numer),
-      Subject: String(req.params.przedmiot),
+      grade: Number(req.params.numer),
+      subject: String(req.params.przedmiot),
       sold: false,
     });
     res.send(BookInfo);
