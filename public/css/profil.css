@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;800;900&display=swap");
+* {
+  box-sizing: border-box;
+}
+:root {
+  --main-color: #ffffff;
+  --second-color: #000000;
+  --third-color: #26b0eb;
+  --main-font-size: clamp(24px, 2.5vw, 36px);
+  --small-font-size: clamp(16px, 2vw, 24px);
+  --vsmall-font-size: clamp(14px, 1.2vw, 18px);
+  --main-font: "Montserrat";
+  --gray-color: #eaeeef;
+}
+
+body {
+  background: var(--main-color);
+  color: var(--second-color);
+  font-family: var(--main-font);
+  font-size: var(--main-font-size);
+  height: 100vh;
+  margin: 0;
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas: "nav" "all";
+}
+
+body > nav {
+  grid-area: nav;
+  padding: 10px 10vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+body > nav > a {
+  all: unset;
+  cursor: pointer;
+}
+
+body > nav > a > h1 {
+  margin: 0;
+  font-size: var(--main-font-size);
+  font-weight: 600;
+}
+
+body > nav > #links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+body > nav > #links > a.dodaj {
+  text-decoration: none;
+  font-size: var(--small-font-size);
+  color: var(--main-color);
+  background: var(--second-color);
+  padding: 8px 24px;
+  border-radius: 20px;
+}
+
+body > nav > #links > a.dodaj:hover {
+  background: var(--third-color);
+  color: var(--second-color);
+}
+
+body > nav > #links > a.profile {
+  height: 50px;
+}
+
+body > nav > #links > a.profile > img {
+  max-width: 50px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}

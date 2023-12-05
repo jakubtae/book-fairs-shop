@@ -1,0 +1,347 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;800;900&display=swap");
+* {
+  box-sizing: border-box;
+}
+:root {
+  --main-color: #ffffff;
+  --second-color: #000000;
+  --third-color: #26b0eb;
+  --main-font-size: clamp(24px, 2.5vw, 36px);
+  --small-font-size: clamp(16px, 2vw, 24px);
+  --vsmall-font-size: clamp(16px, 1.4vw, 18px);
+  --main-font: "Montserrat";
+  --gray-color: #eaeeef;
+}
+
+/* THE MULTI USE START */
+.third-color {
+  color: var(--third-color);
+}
+
+/* THE MULTI USE END */
+
+body {
+  background: var(--main-color);
+  color: var(--second-color);
+  font-family: var(--main-font);
+  font-size: var(--main-font-size);
+  height: 100vh;
+  margin: 0;
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas: "nav" "all";
+}
+
+body.all > nav {
+  grid-area: nav;
+  padding: 10px 10vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+body.all > nav > a {
+  all: unset;
+  cursor: pointer;
+}
+
+body.all > nav > a > h1 {
+  margin: 0;
+  font-size: var(--main-font-size);
+  font-weight: 600;
+}
+
+body.all > nav > #links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+body.all > nav > #links > a.dodaj {
+  text-decoration: none;
+  font-size: var(--small-font-size);
+  color: var(--main-color);
+  background: var(--second-color);
+  padding: 8px 24px;
+  border-radius: 20px;
+}
+
+body.all > nav > #links > a.dodaj:hover {
+  background: var(--third-color);
+  color: var(--second-color);
+}
+
+body.all > nav > #links > a.profile {
+  height: 50px;
+}
+
+body.all > nav > #links > a.profile > img {
+  max-width: 50px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+
+body.all > main {
+  display: grid;
+  grid-template-areas: "klasy" "przedmioty" "main";
+  grid-template-rows: min-content min-content 1fr;
+}
+
+body.all > main > nav.klasy {
+  grid-area: klasy;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-top: 1px solid var(--third-color);
+  border-bottom: 1px solid var(--third-color);
+}
+
+body.all > main > nav.klasy > button {
+  all: unset;
+  padding: 10px 40px;
+  font-size: var(--vsmall-font-size);
+  cursor: pointer;
+  color: var(--third-color);
+  font-weight: 500;
+}
+
+body.all > main > nav.klasy > button.selected {
+  font-weight: 900;
+}
+
+body.all > main > nav.klasy > button:hover {
+  background: var(--third-color);
+  color: var(--main-color);
+}
+body.all > main > nav.przedmioty {
+  grid-area: przedmioty;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  overflow-x: scroll;
+  width: fit-content;
+  min-width: 100%;
+  border-bottom: 1px solid var(--third-color);
+}
+
+body.all > main > nav.przedmioty > button {
+  all: unset;
+  padding: 10px 40px;
+  font-size: var(--vsmall-font-size);
+  cursor: pointer;
+  color: var(--third-color);
+  font-weight: 500;
+}
+
+body.all > main > nav.przedmioty > button:hover {
+  background: var(--third-color);
+  color: var(--main-color);
+}
+
+body.all > main > nav.przedmioty > button.selected2 {
+  font-weight: 900;
+}
+body.all > main > main {
+  grid-area: main;
+  padding: 20px;
+}
+
+body.all > main > main.ksiazki {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 20px;
+}
+
+body.all > main > main.ksiazki > .ksiazka {
+  display: grid;
+  grid-template-areas: "image-container" "info-container";
+  grid-template-rows: 3fr 1fr;
+}
+
+body.all > main > main.ksiazki > .ksiazka:hover {
+  cursor: pointer;
+  border: 1px solid var(--second-color);
+}
+
+body.all > main > main.ksiazki > .ksiazka > .image-container {
+  grid-area: image-container;
+  position: relative;
+  background: #eaeeef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.all > main > main.ksiazki > .ksiazka > .image-container > img {
+  aspect-ratio: 1/1;
+  z-index: 2;
+}
+
+body.all > main > main.ksiazki > .ksiazka > .image-container > span {
+  position: absolute;
+  left: 5px;
+  bottom: 5px;
+  font-size: clamp(12px, 1vw, 16px);
+  z-index: 3;
+  background: var(--main-color);
+}
+
+body.all > main > main.ksiazki > .ksiazka > .info-container {
+  grid-area: info-container;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+body.all > main > main.ksiazki > .ksiazka > .info-container > h3 {
+  all: unset;
+  font-size: var(--small-font-size);
+  font-weight: 800;
+}
+
+body.all > main > main.ksiazki > .ksiazka > .info-container > span {
+  font-size: var(--vsmall-font-size);
+  color: #8b8b8b;
+  font-weight: 500;
+}
+
+main.przegladanie {
+  display: grid;
+  grid-template-columns: repeat(1, 3fr 1fr);
+  grid-template-areas: "div12 div34";
+  gap: 20px;
+}
+
+main.przegladanie > .div12 {
+  grid-area: div12;
+  display: grid;
+  grid-template-rows: 10fr 1fr;
+  gap: 20px;
+}
+
+main.przegladanie > .div12 > .div1 {
+  background: var(--gray-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+main.przegladanie > .div12 > .div1 > .imageContainer {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+}
+
+main.przegladanie > .div12 > .div1 > .imageContainer > img {
+  height: clamp(500px, 60vh, 700px);
+  width: auto;
+}
+
+main.przegladanie > .div12 > .div1 > .imageContainer > button {
+  background: var(--gray-color);
+  cursor: pointer;
+  font-size: 40px;
+}
+main.przegladanie > .div12 > .div1 > span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background: var(--main-color);
+  color: var(--second-color);
+  font-size: var(--small-font-size);
+}
+
+.div2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: var(--gray-color);
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.div2 > form > button {
+  cursor: pointer;
+  background: var(--third-color);
+  color: var(--main-color);
+  font-size: var(--small-font-size);
+  stroke: 0;
+  border: 0;
+  padding: 4px 10px;
+  font-weight: 600;
+}
+
+.div2 > form > button:hover {
+  color: var(--main-color);
+  background: var(--second-color);
+  cursor: pointer;
+}
+
+.div2 > a {
+  color: var(--main-color);
+  background: var(--third-color);
+  padding: 4px 10px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.div2 > a:hover {
+  color: var(--main-color);
+  background: var(--second-color);
+  cursor: pointer;
+}
+main.przegladanie > .div34 {
+  grid-area: div34;
+  display: grid;
+  grid-template-rows: 1fr 9fr;
+  gap: 20px;
+}
+
+main.przegladanie > .div34 > .div3 {
+  background: var(--gray-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main.przegladanie > .div34 > .div3 > a {
+  text-decoration: none;
+  color: var(--second-color);
+  width: 100%;
+  height: 100%;
+  font-size: var(--small-font-size);
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+main.przegladanie > .div34 > .div3 > a:hover {
+  background: #e2e6e7;
+}
+
+main.przegladanie > .div34 > .div3 > a > img {
+  width: 50px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+}
+
+main.przegladanie > .div34 > .div4 {
+  background: var(--gray-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+main.przegladanie > .div34 > .div4 > .dane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
+}
+
+main.przegladanie > .div34 > .div4 > .dane > span {
+  font-weight: 600;
+  font-size: var(--small-font-size);
+}

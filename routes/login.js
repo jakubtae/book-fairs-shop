@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
               httpOnly: true,
               sameSite: "None",
               secure: true,
-              maxAge: 300 * 1000,
+              maxAge: 30 * 60 * 1000,
             });
             //! DO A BACKUP OF COLLECTIONS AND SEND IT TO MY EMAIL
             res.redirect(`/${admin.id}/ksiazki`);
@@ -48,7 +48,7 @@ router.post("/", async (req, res) => {
 
 function generateAccessToken(admin) {
   return jwt.sign(admin.toJSON(), process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "9000s",
+    expiresIn: "30m",
   });
 }
 

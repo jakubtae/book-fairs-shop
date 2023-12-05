@@ -1,4 +1,11 @@
 <nav>
-  <h1><span class="third-color">KIERMASZ</span> ZS2</h1>
-  <a href="/dodaj"> Dodaj książke </a>
+  <a href="/<%=locals.uuid%>/ksiazki" class="kiermasz">
+    <h1><span class="third-color">KIERMASZ</span> ZS2</h1>
+  </a>
+  <div id="links">
+    <a href="dodaj" class="dodaj"> Wystaw</a>
+    <a href="/<%=locals.uuid%>/profile" class="profile"
+      ><img src="/img/<%= locals.img_url%>" alt="user_profile"
+    /></a>
+  </div>
 </nav>

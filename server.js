@@ -16,8 +16,9 @@ app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ limit: "10mB", extended: false })); //! for FORMS USAGE
+app.use(express.urlencoded({ extended: false })); // this is to handle URL encoded data
 
 const landingRouter = require("./routes/landing");
 app.use("/", landingRouter);

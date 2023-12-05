@@ -5,40 +5,80 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/dodaj.css" />
-    <title>Kiermasz ZS2 - Dodawanie Książki</title>
+    <title>Kiermasz ZS2 - Wystaw książkę</title>
   </head>
-  <body clas="login">
-    <nav>
-      <h1><span class="third-color">KIERMASZ</span> ZS2</h1>
-    </nav>
-    <div class="all">
-      <main>
-        <h2 class="wp">Dodaj książkę</h2>
-        <form action="">
+  <body clas="dodaj">
+    <%- include ("../includes/nav_semi.ejs")%>
+    <main>
+      <h2 class="wp">Dodaj książkę</h2>
+      <form
+        id="form_el"
+        action="dodaj"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div class="input-container">
           <label for="title">Nazwa Książki</label>
           <input type="text" name="title" id="title" />
+        </div>
+        <div class="input-container">
           <label for="subject">Przedmiot</label>
-          <select name="przedmiot" id="subject">
+          <select name="subject" id="subject">
             <%locals.przedmioty.forEach((przedmiot)=>{%>
             <option value="<%=przedmiot%>"><%=przedmiot%></option>
             <%})%>
           </select>
+        </div>
+        <div class="input-container">
           <label for="grade">Klasa</label>
-          <select name="klasa" id="grade">
+          <select name="grade" id="grade">
             <%locals.klasy.forEach((przedmiot)=>{%>
             <option value="<%=przedmiot%>"><%=przedmiot%></option>
             <%})%>
           </select>
-          <label for="price">Cena</label>
-          <input type="number" min="1" step="any" name="cena" id="price" />
+        </div>
+        <div class="input-container">
+          <label for="price">Cena (w zł)</label>
+          <input type="number" min="1" step="any" name="price" id="price" />
+        </div>
+        <div class="input-container">
           <label for="cover">Stan Książki</label>
-          <select name="okladka" id="cover">
+          <select name="quality" id="cover">
             <%locals.jakosc.forEach((przedmiot)=>{%>
             <option value="<%=przedmiot%>"><%=przedmiot%></option>
             <%})%>
           </select>
-        </form>
-      </main>
-    </div>
+        </div>
+        <div class="input-container">
+          <label for="file">Wybierz zdjęcia (max 5):</label>
+          <input
+            type="file"
+            multiple="multiple"
+            accept="image/*"
+            name="uploadedImages"
+            id="file"
+          />
+          <span class="hint">Wspierane rozszerzenia: jpg, jpeg, png.</span>
+        </div>
+        <input type="submit" value="Dodaj Książkę" />
+      </form>
+
+      <script defer>
+        const form_el = document.getElementById("form_el");
+        form_el.addEventListener("submit", async function (e) {
+          const files = e.target.uploadedImages.files;
+          if (files.length != 0) {
+            for (const single_file of files) {
+              data.append("uploadedImages", single_file);
+            }
+          }
+        });
+
+        const submit_data_fetch = await fetch("/<%=locals.uuid%>/dodaj", {
+          method: "POST",
+          body: data,
+        });
+      </script>
+    </main>
   </body>
 </html>

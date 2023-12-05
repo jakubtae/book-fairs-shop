@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/all.css" />
+    <link rel="stylesheet" href="/css/fontello/css/fontello.css" />
     <title>Kiermasz</title>
-  </head>
-  <body>
-    <script>
+    <script type="application/javascript">
       var url = 0 || <%- JSON.stringify(locals.url) %>;
       async function szczegoly(klasa, przedmiot, ksiazkaid) {
         try {
@@ -17,12 +17,74 @@
           xj2.send();
           xj2.onreadystatechange = function () {
             if (xj2.readyState == 4) {
-              var response1 = JSON.parse(xj2.responseText);
-              var ksiazki = document.querySelector(".ksiazki");
+              const response1 = JSON.parse(xj2.responseText);
+              console.log(response1)
+              var ksiazki = document.querySelector("main.ksiazki");
               ksiazki.innerHTML = "";
-              ksiazki.id="przegladanie"
-              ksiazki.innerHTML = `<h2>${response1[0].title}</h2>`;
+              ksiazki.className= "przegladanie"
+              var main = document.querySelector("main.przegladanie")
+
+              var div12 = document.createElement("div");
+              div12.className = "div12"
+
+              var div1 = document.createElement("div");
+              div1.className = "div1"
+              let zdjecia = response1.BookInfo.img_id;
+              const url = `/img/uploads/${response1.AuthorInfo._id}/`;
+              var i = 0;
+
+              let zdjecia_wyglad = document.createElement("img");
+              zdjecia_wyglad.src = url + zdjecia[i];
+
+              let zdjecia_liczba = document.createElement("span");
+              zdjecia_liczba.innerHTML = `${i+1}/${zdjecia.length}`
+              let div1_1 = document.createElement("div");
+              div1_1.className= "imageContainer";
+
+              div1_1.appendChild(zdjecia_wyglad)
+              div1.appendChild(zdjecia_liczba)
+              if(zdjecia.length > 0){
+                var button = document.createElement("button");
+                  button.className = "icon-right-arr";
+                  button.onclick = function(){
+                    i++;
+                    if(i>= zdjecia.length) i = 0;
+                    zdjecia_wyglad.src = url + zdjecia[i]
+                    zdjecia_liczba.innerHTML = `${i+1}/${zdjecia.length}`
+                }
+                div1_1.appendChild(button)
+              }
+              div1.appendChild(div1_1)
+              div12.appendChild(div1)
+              var div34 = document.createElement("div");
+              var div3 = document.createElement("div");
+              div3.className = "div3";
+              div34.className = "div34";
+              div3.innerHTML = `        <a href="/${response1.AuthorInfo._id}/profile" class="profile"
+          >Dodał:<b> ${response1.AuthorInfo.imie} ${response1.AuthorInfo.nazwisko}</b><img src="/img/${response1.AuthorInfo.img_id}" alt="user_profile"
+        /></a>`
+              div34.appendChild(div3)
+
+              var div2 = document.createElement("div");
+              div2.className = "div2";
+              div2.innerHTML = `<form method="POST" action="klasy/${Number(klasa)}/${String(przedmiot)}/${String(ksiazkaid)}/rezerwuj"><button type="submit">Zarezerwuj za ${response1.BookInfo.price.$numberDecimal} zł </button></form> lub <a href="/${response1.AuthorInfo._id}/profile">Skontaktuj się ze sprzedającym</a>`
+              div12.appendChild(div2)
+              main.appendChild(div12)
+
+              var div4 = document.createElement("div");
+              div4.className = "div4"
+              div4.innerHTML = `<h3>Dane Książki</h3> <div class="dane">
+                <span>Tytuł: ${response1.BookInfo.title}</span>
+                <span>Klasa: ${response1.BookInfo.grade}</span>
+                <span>Przedmiot: ${response1.BookInfo.subject}</span>
+                <span>Stan: ${response1.BookInfo.quality}</span>
+                <span>Cena: ${response1.BookInfo.price.$numberDecimal} zł</span>
+                </div>`;
+                div34.appendChild(div4);
+                main.appendChild(div34)
+
             }
+
           }
         } catch (err) {
           console.log(err)
@@ -39,11 +101,14 @@
             if (xj2.readyState == 4) {
               var response1 = JSON.parse(xj2.responseText);
               var klasy = document.querySelector(".klasy");
-              response1.forEach((klasa) => {
+              response1.forEach((klasa,index) => {
                 var klasa_element = document.createElement("button")
-                klasa_element.id = klasa;
+                if(index+1 == Number(response1[0])){
+                  klasa_element.className = "selected"
+                }
+                klasa_element.id = `klasa${klasa}`;
                 klasa_element.addEventListener("click", function () { lista_przedmiotow(klasa) }, "false");
-                klasa_element.innerHTML = klasa
+                klasa_element.innerHTML = `Klasa ${klasa}`
                 klasy.appendChild(klasa_element)
               })
               lista_przedmiotow(response1[0]);
@@ -59,7 +124,12 @@
       async function lista_przedmiotow(klasa) {
         try {
           var uuid = <%- JSON.stringify(locals.uuid) %> || 1;
-          var numer = Number(klasa)
+          var numer = Number(klasa);
+          if(document.querySelector("main.przegladanie")){
+            var ksiazki = document.querySelector("main.przegladanie");
+              ksiazki.innerHTML = "";
+              ksiazki.className= "ksiazki"
+          }
           xj = new XMLHttpRequest();
           xj.open(`POST`, `${url}/${Number(uuid)}/klasy/${numer}`, true);
           xj.setRequestHeader("Content-Type", "application/json");
@@ -67,10 +137,17 @@
           xj.onreadystatechange = function () {
             if (xj.readyState == 4) {
               var response = JSON.parse(xj.responseText);
+              var selected = document.querySelector(".selected");
+              selected.className = ""
+              var newSelected = document.querySelector(`#klasa${klasa}`);
+              newSelected.className = "selected"
               var przedmioty = document.querySelector(".przedmioty");
               przedmioty.innerHTML = "";
               response.listOfSubjects.forEach((przedmiot, index) => {
                 var przedmiot_element = document.createElement("button")
+                if(index == 0){
+                  przedmiot_element.className = "selected2"
+                }
                 przedmiot_element.id = przedmiot;
                 przedmiot_element.addEventListener("click", function () { lista_ksiazek(response.grade, przedmiot) }, "false");
                 przedmiot_element.innerHTML = przedmiot;
@@ -87,6 +164,11 @@
       async function lista_ksiazek(klasa, przedmiot) {
         try {
           var uuid = <%- JSON.stringify(locals.uuid) %> || 1;
+          if(document.querySelector("main.przegladanie")){
+            var ksiazki = document.querySelector("main.przegladanie");
+              ksiazki.innerHTML = "";
+              ksiazki.className= "ksiazki"
+          }
           xj3 = new XMLHttpRequest();
           xj3.open(`POST`, `${url}/${Number(uuid)}/klasy/${String(klasa)}/${String(przedmiot)}`, true);
           xj3.setRequestHeader("Content-Type", "application/json");
@@ -95,22 +177,30 @@
             if (xj3.readyState == 4) {
               var response = JSON.parse(xj3.responseText);
               console.log(response)
+              var selected = document.querySelector(".selected2");
+              selected.className = ""
+              var newSelected = document.getElementById(przedmiot);
+              newSelected.className = "selected2"
+
               var ksiazki = document.querySelector(".ksiazki");
               ksiazki.innerHTML = "";
-              if (response.length > 1) {
-                for (var i = 0; i < response.length; i++) {
-                  var ksiazka_element = document.createElement("div");
-                  ksiazka_element.class="ksiazka"
-                  ksiazka_element.innerHTML = `<h3>Tytuł : ${response[i].title}</h3>  <h4>${response[i].price.$numberDecimal} </h4> <button onclick="szczegoly('${klasa}', '${przedmiot}', '${response[i]._id}')">Zobacz Więcej</button>`;
-                  ksiazki.appendChild(ksiazka_element)
-                };
-              }
-              else {
+              response.forEach((ksiazka)=>{
                 var ksiazka_element = document.createElement("div");
-                ksiazka_element.class="ksiazka"
-                ksiazka_element.innerHTML = `<h3>Tytuł : ${response[0].title}</h3> <h4>${response[0].price.$numberDecimal}</h4> <button onclick="szczegoly('${klasa}', '${przedmiot}', '${response[0]._id}')">Zobacz Więcej</button>`;
-                ksiazki.appendChild(ksiazka_element)
-              }
+                  ksiazka_element.className="ksiazka"
+                  ksiazka_element.onclick = function(){szczegoly(`${klasa}`, `${przedmiot}`, `${ksiazka._id}`)}
+                  ksiazka_element.innerHTML =
+                  `<div class="image-container">
+                    <img src= "/img/uploads/${ksiazka.author_id}/${ksiazka.img_id[0]}" alt="zdjęcie ${ksiazka.title}"/>
+                    <span> ${ksiazka.price.$numberDecimal} zł </span>
+                    </div>
+                    <div class="info-container">
+                    <h3>
+                      ${ksiazka.title}
+                      </h3>
+                    <span>Jakość : ${ksiazka.quality}</span>
+                    </div>`;
+                  ksiazki.appendChild(ksiazka_element)
+              })
             }
           }
         } catch (err) {
@@ -119,10 +209,9 @@
       }
       lista_klas();
     </script>
-    <nav>
-      <h1><span class="third-color">KIERMASZ</span> ZS2</h1>
-      <a href="dodaj"> Dodaj</a>
-    </nav>
+  </head>
+  <body class="all">
+    <%- include ("../includes/nav_semi.ejs")%>
     <main>
       <nav class="klasy"></nav>
       <nav class="przedmioty"></nav>
